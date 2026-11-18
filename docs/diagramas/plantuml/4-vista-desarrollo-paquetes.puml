@@ -1,0 +1,89 @@
+@startuml vista-desarrollo
+!pragma layout smetana
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam package {
+  BackgroundColor #F3F3F3
+  BorderColor #555555
+}
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #333333
+}
+hide empty members
+hide circle
+title Vista de desarrollo - Paquetes y dependencias
+
+package "incidentes-frontend  (com.empresa.salacontrol)" as FRONT {
+  package "vistas" as fvistas {
+    class "MainLayout\nTableroView, IncidentesView\nDetalleIncidenteView, ReportarView\nUsuariosView, ReportesView\nArquitecturaView, DisenoView" as FV
+  }
+  package "ui" as fui {
+    class "Acciones\nPiezas, Formato\nMapaRecurrencias" as FU
+  }
+  package "sesion" as fsesion {
+    class SesionUsuario
+  }
+  package "api  (cliente HTTP)" as fapi {
+    class "ApiCliente\nRegistroHttp\nDto, ApiException" as FA
+  }
+}
+
+package "incidentes-api  (com.empresa.incidentes)" as BACK {
+
+package "controller  (capa de presentacion REST)" as controller {
+  class IncidenteController
+  class UsuarioController
+  class ReporteController
+}
+package "dto" as dto {
+  class "Solicitudes\nIncidenteResponse\nReportes\nProblemaRecurrente\nFiltroIncidentes\nErrorResponse" as DTOS
+}
+package "service  (logica de aplicacion)" as service {
+  class IncidenteService
+  class UsuarioService
+  class ReporteService
+  class GeneradorCodigoService
+}
+package "exception" as exception {
+  class "ManejadorGlobalErrores\nReglaNegocioException\nRecursoNoEncontradoException" as EXC
+}
+package "repository  (acceso a datos)" as repository {
+  interface IncidenteRepository
+  interface UsuarioRepository
+  class IncidenteRepositoryCustomImpl
+}
+package "model  (dominio, documentos MongoDB)" as model {
+  class "Incidente\nUsuario\nEventoHistorial\nComentario\nContador\n+ enums" as MOD
+}
+package "config" as config {
+  class ConfiguracionApi
+}
+}
+
+IncidenteController -down-> IncidenteService
+UsuarioController -down-> UsuarioService
+ReporteController -down-> ReporteService
+controller .right.> DTOS
+IncidenteService -right-> UsuarioService
+IncidenteService -down-> GeneradorCodigoService
+ReporteService -left-> UsuarioService
+IncidenteService -down-> IncidenteRepository
+ReporteService -down-> IncidenteRepository
+UsuarioService -down-> UsuarioRepository
+service .right.> EXC
+repository ..> DTOS
+model ..> EXC
+EXC ..> DTOS
+IncidenteRepository -down-> MOD
+UsuarioRepository -down-> MOD
+IncidenteRepositoryCustomImpl -down-> MOD
+GeneradorCodigoService ..> MOD
+config -[hidden]down- dto
+FV -right-> FU
+FV -down-> FA
+FV -right-> SesionUsuario
+FU -down-> FA
+FA .down.> controller : HTTP/JSON
+@enduml

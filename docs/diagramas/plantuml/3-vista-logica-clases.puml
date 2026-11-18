@@ -1,0 +1,136 @@
+@startuml vista-logica
+!pragma layout smetana
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #E6F4EA
+  BorderColor #333333
+}
+hide empty members
+left to right direction
+title Vista logica - Diagrama de clases del dominio
+
+class Usuario <<Document>> {
+  -id : String
+  -nombre : String
+  -email : String
+  -rol : Rol
+  -departamento : String
+  -especialidad : Categoria
+  -activo : boolean
+  -fechaRegistro : Instant
+  +esTecnico() : boolean
+}
+
+class Incidente <<Document>> {
+  -id : String
+  -codigo : String
+  -titulo : String
+  -descripcion : String
+  -categoria : Categoria
+  -prioridad : Prioridad
+  -estado : EstadoIncidente
+  -activoAfectado : String
+  -reportadoPorId : String
+  -tecnicoAsignadoId : String
+  -fechaCreacion : Instant
+  -fechaAsignacion : Instant
+  -fechaPrimeraRespuesta : Instant
+  -fechaResolucion : Instant
+  -fechaCierre : Instant
+  -fechaLimiteSla : Instant
+  -solucion : String
+  +registrarCreacion(codigo, usuarioId) : void
+  +asignar(tecnico : Usuario, usuarioId) : void
+  +cambiarEstado(nuevo, usuarioId, motivo) : void
+  +resolver(solucion, usuarioId) : void
+  +cambiarPrioridad(nueva, usuarioId) : void
+  +agregarComentario(autorId, texto) : void
+  +actualizarDatos(...) : void
+  +minutosPrimeraRespuesta() : Long
+  +minutosResolucion() : Long
+  +slaIncumplido() : boolean
+}
+
+class EventoHistorial {
+  -fecha : Instant
+  -tipo : TipoEvento
+  -usuarioId : String
+  -descripcion : String
+  -valorAnterior : String
+  -valorNuevo : String
+}
+
+class Comentario {
+  -autorId : String
+  -texto : String
+  -fecha : Instant
+}
+
+class Contador <<Document>> {
+  -id : String
+  -valor : long
+}
+
+enum Rol {
+  REPORTANTE
+  TECNICO
+  ADMINISTRADOR
+}
+
+enum Prioridad {
+  BAJA
+  MEDIA
+  ALTA
+  CRITICA
+  -horasRespuesta : int
+  -horasResolucion : int
+}
+
+enum EstadoIncidente {
+  ABIERTO
+  ASIGNADO
+  EN_PROGRESO
+  EN_ESPERA
+  RESUELTO
+  CERRADO
+  CANCELADO
+  +siguientesPermitidos() : Set
+  +puedeCambiarA(destino) : boolean
+  +esFinal() : boolean
+}
+
+enum Categoria {
+  HARDWARE
+  SOFTWARE
+  RED
+  CORREO
+  SEGURIDAD
+  ACCESOS
+  IMPRESION
+  OTRO
+}
+
+enum TipoEvento {
+  CREACION
+  ASIGNACION
+  CAMBIO_ESTADO
+  CAMBIO_PRIORIDAD
+  COMENTARIO
+  RESOLUCION
+  ACTUALIZACION
+}
+
+Usuario "1" -- "0..*" Incidente : reporta >
+Usuario "0..1" -- "0..*" Incidente : atiende >
+Incidente "1" *-- "1..*" EventoHistorial : historial
+Incidente "1" *-- "0..*" Comentario : comentarios
+Usuario --> Rol
+Usuario --> Categoria : especialidad
+Incidente --> Prioridad
+Incidente --> EstadoIncidente
+Incidente --> Categoria
+EventoHistorial --> TipoEvento
+Contador ..> Incidente : genera codigo INC
+@enduml

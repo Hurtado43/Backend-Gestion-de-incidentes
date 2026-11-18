@@ -1,0 +1,56 @@
+@startuml vista-funcional
+!pragma layout smetana
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam componentStyle uml2
+skinparam component {
+  BackgroundColor #FFF4D6
+  BorderColor #333333
+}
+title Vista funcional - Diagrama de componentes
+
+actor "Usuario\n(navegador)" as USR
+actor "Postman" as PM
+
+package "incidentes-frontend (Spring Boot + Vaadin)" {
+  component "Vistas de la sala de control" as VIS
+  component "Cliente HTTP\n(ApiCliente + RegistroHttp)" as CH
+}
+
+() "/api/incidentes" as II
+() "/api/usuarios" as IU
+() "/api/reportes" as IR
+
+package "incidentes-api (Spring Boot)" {
+  component "Gestion de Incidentes" as CI
+  component "Gestion de Usuarios" as CU
+  component "Reportes e Indicadores" as CR
+  component "Generador de Codigos" as CG
+  component "Persistencia\n(Spring Data MongoDB)" as CP
+  component "Manejo de Errores" as CE
+}
+
+database "MongoDB\nincidentes_db" as DB
+
+USR -right-> VIS : interactua
+VIS -right-> CH : usa
+CH -down-> II : HTTP/JSON
+CH -down-> IU : HTTP/JSON
+CH -down-> IR : HTTP/JSON
+PM .down.> II : pruebas
+
+II -down- CI
+IU -down- CU
+IR -down- CR
+
+CI -right-> CU : consulta tecnicos
+CR -left-> CU : usa
+CI -down-> CG : codigo INC
+CE .up.> CR : excepciones a JSON\n(400 / 404 / 409)
+
+CU -down-> CP
+CI -down-> CP
+CR -down-> CP
+CG -right-> CP
+CP -right-> DB : MongoDB Wire\nProtocol
+@enduml

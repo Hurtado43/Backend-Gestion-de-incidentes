@@ -1,0 +1,43 @@
+@startuml vista-despliegue
+!pragma layout smetana
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam node {
+  BackgroundColor #FFFFFF
+  BorderColor #333333
+}
+skinparam artifact {
+  BackgroundColor #EEF3FB
+  BorderColor #1A4FA0
+}
+title Vista de despliegue
+
+node "<<device>>\nPC del usuario" as PC {
+  node "<<execution environment>>\nNavegador web / Postman" as NAV {
+    artifact "<<artifact>>\nSala de control (HTML de Vaadin)\nIncidentes-TI.postman_collection.json" as COL
+  }
+}
+
+node "<<device>>\nServidor del frontend" as FES {
+  node "<<execution environment>>\nJVM Java 21" as JVMF {
+    artifact "<<artifact>>\nincidentes-frontend-1.0.0.jar\n(Spring Boot + Vaadin 24, puerto 8081)" as FJAR
+  }
+}
+
+node "<<device>>\nServidor de aplicaciones" as APP {
+  node "<<execution environment>>\nJVM Java 21" as JVM {
+    artifact "<<artifact>>\nincidentes-api-1.0.0.jar\n(Spring Boot 3.5, puerto 8080)" as JAR
+  }
+}
+
+node "<<device>>\nServidor de base de datos" as DBS {
+  node "<<execution environment>>\nMongoDB 7" as MDB {
+    artifact "<<artifact>>\nincidentes_db\n(usuarios, incidentes, contadores)" as BD
+  }
+}
+
+COL -right- FJAR : HTTP :8081
+FJAR -right- JAR : HTTP/JSON :8080
+JAR -right- BD : TCP :27017
+COL .. JAR : Postman: HTTP/JSON :8080
+@enduml

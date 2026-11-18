@@ -1,0 +1,32 @@
+@startuml vista-contexto
+!pragma layout smetana
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #333333
+}
+skinparam usecase {
+  BackgroundColor #E8F0FE
+  BorderColor #1A4FA0
+}
+title Vista de contexto - Sistema de Gestion de Incidentes de TI
+
+rectangle "Empleado\n(Reportante)" as EMP
+rectangle "Tecnico de soporte" as TEC
+rectangle "Administrador de\nmesa de ayuda" as ADM
+rectangle "Gerencia de TI" as GER
+usecase "Sistema de Gestion\nde Incidentes de TI" as SIS
+
+EMP -down-> SIS : Reporte de incidente\nConfirmacion de cierre
+SIS -up-> EMP : Codigo INC, estado\ny solucion
+
+ADM -right-> SIS : Asignacion de tecnico\nPrioridad, usuarios
+SIS -left-> ADM : Bandeja de incidentes\nCarga por tecnico
+
+SIS -right-> TEC : Incidentes asignados\nAntecedentes del activo
+TEC -left-> SIS : Avance, comentarios\nSolucion aplicada
+
+GER -up-> SIS : Consulta de indicadores
+SIS -down-> GER : Problemas recurrentes\nTiempos de respuesta / SLA
+@enduml
