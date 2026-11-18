@@ -1,0 +1,1210 @@
+{
+  "info": {
+    "name": "Gestion de Incidentes de TI - API REST",
+    "description": "Ejecute las carpetas en orden (1 a 4). Las variables se llenan solas con los ids y el codigo creados; los emails usan {{$timestamp}}, asi que la coleccion se puede repetir aunque la base ya tenga datos (incluidos los datos de demostracion).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "adminId",
+      "value": ""
+    },
+    {
+      "key": "reportanteId",
+      "value": ""
+    },
+    {
+      "key": "tecnicoRedId",
+      "value": ""
+    },
+    {
+      "key": "tecnicoHwId",
+      "value": ""
+    },
+    {
+      "key": "incidenteId",
+      "value": ""
+    },
+    {
+      "key": "incidenteCodigo",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Usuarios",
+      "item": [
+        {
+          "name": "Crear administrador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Laura Gomez\",\n  \"email\": \"laura.{{$timestamp}}@demo.com\",\n  \"rol\": \"ADMINISTRADOR\",\n  \"departamento\": \"TI\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.id) pm.collectionVariables.set('adminId', r.id);",
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear reportante",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos Perez\",\n  \"email\": \"carlos.{{$timestamp}}@demo.com\",\n  \"rol\": \"REPORTANTE\",\n  \"departamento\": \"Ventas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.id) pm.collectionVariables.set('reportanteId', r.id);",
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear tecnico de redes",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana Martinez\",\n  \"email\": \"ana.{{$timestamp}}@demo.com\",\n  \"rol\": \"TECNICO\",\n  \"departamento\": \"Soporte\",\n  \"especialidad\": \"RED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.id) pm.collectionVariables.set('tecnicoRedId', r.id);",
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear tecnico de hardware",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Pedro Rojas\",\n  \"email\": \"pedro.{{$timestamp}}@demo.com\",\n  \"rol\": \"TECNICO\",\n  \"departamento\": \"Soporte\",\n  \"especialidad\": \"HARDWARE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.id) pm.collectionVariables.set('tecnicoHwId', r.id);",
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar tecnicos activos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/tecnicos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "tecnicos"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{reportanteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{reportanteId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{reportanteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{reportanteId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos Perez\",\n  \"email\": \"carlos.{{$timestamp}}@demo.com\",\n  \"rol\": \"REPORTANTE\",\n  \"departamento\": \"Comercial\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Ciclo de vida del incidente",
+      "item": [
+        {
+          "name": "Reportar incidente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Sin conexion a internet\",\n  \"descripcion\": \"Ningun equipo del piso 3 navega\",\n  \"categoria\": \"RED\",\n  \"prioridad\": \"ALTA\",\n  \"activoAfectado\": \"ROUTER-PISO3\",\n  \"reportadoPorId\": \"{{reportanteId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.id) pm.collectionVariables.set('incidenteId', r.id);",
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));",
+                  "if (r.codigo) pm.collectionVariables.set('incidenteCodigo', r.codigo);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar incidentes (filtros)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes?estado=ABIERTO&categoria=RED",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes"
+              ],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "ABIERTO"
+                },
+                {
+                  "key": "categoria",
+                  "value": "RED"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar por codigo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteCodigo}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteCodigo}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Asignacion automatica",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/asignar-automatico?usuarioId={{adminId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "asignar-automatico"
+              ],
+              "query": [
+                {
+                  "key": "usuarioId",
+                  "value": "{{adminId}}"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reasignar a otro tecnico",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/asignar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "asignar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tecnicoId\": \"{{tecnicoRedId}}\",\n  \"usuarioId\": \"{{adminId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cambiar prioridad",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/prioridad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "prioridad"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prioridad\": \"CRITICA\",\n  \"usuarioId\": \"{{adminId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Iniciar atencion (EN_PROGRESO)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "estado"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"EN_PROGRESO\",\n  \"usuarioId\": \"{{tecnicoRedId}}\",\n  \"motivo\": \"Inicio diagnostico\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Agregar comentario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/comentarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "comentarios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autorId\": \"{{tecnicoRedId}}\",\n  \"texto\": \"El router no responde, se revisa en sitio\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar datos",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descripcion\": \"Sin internet en todo el piso 3 desde las 8am\",\n  \"usuarioId\": \"{{tecnicoRedId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Resolver",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/resolver",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "resolver"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"solucion\": \"Se reinicio el router y se actualizo el firmware\",\n  \"usuarioId\": \"{{tecnicoRedId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cerrar (confirmacion del usuario)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "estado"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"CERRADO\",\n  \"usuarioId\": \"{{reportanteId}}\",\n  \"motivo\": \"Confirmado por el usuario\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver historial",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/historial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "historial"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ver antecedentes del mismo activo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/antecedentes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "antecedentes"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Reportes",
+      "item": [
+        {
+          "name": "Reportar falla repetida 1 (mismo router)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Internet intermitente\",\n  \"descripcion\": \"Se cae la conexion cada 10 minutos\",\n  \"categoria\": \"RED\",\n  \"prioridad\": \"MEDIA\",\n  \"activoAfectado\": \"ROUTER-PISO3\",\n  \"reportadoPorId\": \"{{reportanteId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reportar falla repetida 2 (mismo router)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Red lenta en piso 3\",\n  \"descripcion\": \"Las paginas tardan mucho en cargar\",\n  \"categoria\": \"RED\",\n  \"prioridad\": \"BAJA\",\n  \"activoAfectado\": \"ROUTER-PISO3\",\n  \"reportadoPorId\": \"{{reportanteId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Resumen general",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/resumen",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "resumen"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Problemas recurrentes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/problemas-recurrentes?dias=30&minimo=3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "problemas-recurrentes"
+              ],
+              "query": [
+                {
+                  "key": "dias",
+                  "value": "30"
+                },
+                {
+                  "key": "minimo",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Tiempos por prioridad / SLA",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/tiempos?dias=30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "tiempos"
+              ],
+              "query": [
+                {
+                  "key": "dias",
+                  "value": "30"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Desempeno de tecnicos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/tecnicos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reportes",
+                "tecnicos"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Respuesta exitosa', () => pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Casos de error",
+      "item": [
+        {
+          "name": "Transicion invalida (409)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/{{incidenteId}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "{{incidenteId}}",
+                "estado"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"EN_PROGRESO\",\n  \"usuarioId\": \"{{adminId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Devuelve 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Datos invalidos (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"\",\n  \"categoria\": \"RED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Devuelve 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Incidente inexistente (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/incidentes/INC-999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "incidentes",
+                "INC-999999"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Devuelve 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
