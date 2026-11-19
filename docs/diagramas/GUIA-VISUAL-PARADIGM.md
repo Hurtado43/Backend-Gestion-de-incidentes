@@ -16,9 +16,8 @@ hechos con figuras UML nativas de VP, así que se editan como cualquier diagrama
 Para abrirlos: <https://online.visual-paradigm.com> → inicia sesión → *My artifacts* → doble clic en el diagrama.
 Desde el editor puedes exportarlos (*Export* → PNG, JPG, SVG o PDF) para el informe.
 
-> **Pendiente de actualizar en VP Online:** cuando se agregó el frontend (Vaadin), los diagramas 2 (componentes),
-> 4 (paquetes) y 5 (despliegue) de esta carpeta se actualizaron con la nueva capa, pero las copias de VP Online
-> todavía muestran la versión anterior (sin el frontend). Las versiones vigentes son las de `plantuml/` y `png/`.
+Los diagramas 2 (componentes), 4 (paquetes) y 5 (despliegue) ya incluyen la capa del frontend (Vaadin), igual que
+las versiones de `plantuml/` y `png/`.
 
 ## Copias en esta carpeta
 

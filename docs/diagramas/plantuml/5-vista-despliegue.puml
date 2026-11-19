@@ -31,7 +31,7 @@ node "<<device>>\nServidor de aplicaciones" as APP {
 }
 
 node "<<device>>\nServidor de base de datos" as DBS {
-  node "<<execution environment>>\nMongoDB 7" as MDB {
+  node "<<execution environment>>\nMongoDB 8" as MDB {
     artifact "<<artifact>>\nincidentes_db\n(usuarios, incidentes, contadores)" as BD
   }
 }
